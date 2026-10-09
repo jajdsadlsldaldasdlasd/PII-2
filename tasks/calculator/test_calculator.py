@@ -19,4 +19,3 @@ def test_add_with_zero():
 def test_add_floats():
     """Проверяет сложение дробных чисел."""
     assert add_numbers(1.5, 2.5) == 4.0
-    
