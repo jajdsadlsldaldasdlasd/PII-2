@@ -12,11 +12,11 @@ def check_winners(scores, student_score):
     Returns:
         None: Функция ничего не возвращает, только печатает результат.
     """
-    # Сортируем баллы по убыванию
-    sorted_scores = sorted(scores, reverse=True)
+    # Сортируем баллы по возрастанию
+    sorted_scores = sorted(scores)
 
     # Берём тройку лидеров
-    top_three = sorted_scores[:3]
+    top_three = sorted_scores[3:]
 
     # Проверяем, входит ли балл Стаса в тройку
     if student_score in top_three:
