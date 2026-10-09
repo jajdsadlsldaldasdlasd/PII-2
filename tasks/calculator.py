@@ -16,12 +16,16 @@ while True:
             break
         elif op == '-':
             print(f'{a} - {b} = {np.subtract(a, b)}')
+            break
         elif op == '*':
             print(f'{a}*{b} = {np.multiply(a, b)}')
+            break
         elif op == '/':
             print(f'{a} / {b} = {np.divide(a, b)}')
+            break
         elif op == '^':
-                print(f'{a} ^ {b} = {np.float_power(a,b)}')
+            print(f'{a} ^ {b} = {np.float_power(a,b)}')
+            break
         else:
             print("Неизвестное действие")
             break
