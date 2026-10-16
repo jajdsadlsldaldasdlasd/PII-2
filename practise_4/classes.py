@@ -10,7 +10,6 @@ class Book:
     def info(self):
         return f"«{self.title}», {self.author} ({self.year} г.)"
 
-    
     def __str__(self):
         return self.info()
 
@@ -25,6 +24,7 @@ class Book:
     def from_string(cls, data):
         title, author, year = data.split(";")
         return cls(title, author, int(year))
+
 
 class Ebook(Book):
     def __init__(self, title: str, author: str, year: int, format: str):
