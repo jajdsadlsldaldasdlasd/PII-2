@@ -6,38 +6,26 @@ from datetime import date, datetime
 DATE_FORMAT = "%Y-%m-%d"
 
 
-class Product:
-    """Продукт с названием и сроком годности."""
-
-    def __init__(self, name: str, expiration_date: date) -> None:
-        """Сохраняет название и срок годности продукта.
-
-        Args:
-            name: Название продукта.
-            expiration_date: Последний день срока годности.
-        """
-        self.name = name
-        self.expiration_date = expiration_date
-
-    def is_expired(self) -> bool:
-        """Возвращает True, если срок годности уже закончился."""
-        return self.expiration_date < date.today()
-
-
 class Refrigerator:
-    """Список продуктов и простые действия с ним."""
+    """Хранит продукты в словаре: название и срок годности."""
 
     def __init__(self) -> None:
         """Создаёт пустой холодильник."""
-        self.products: list[Product] = []
+        self.products: dict[str, date] = {}
 
-    def add_product(self, product: Product) -> None:
-        """Добавляет продукт в холодильник.
+    def add_product(self, name: str, expiration_date: date) -> None:
+        """Добавляет продукт или обновляет его срок годности.
 
         Args:
-            product: Продукт для добавления.
+            name: Название продукта.
+            expiration_date: Срок годности.
         """
-        self.products.append(product)
+        for product_name in self.products:
+            if product_name.casefold() == name.casefold():
+                self.products[product_name] = expiration_date
+                return
+
+        self.products[name] = expiration_date
 
     def remove_product(self, name: str) -> bool:
         """Удаляет первый продукт с таким названием.
@@ -50,9 +38,9 @@ class Refrigerator:
         Returns:
             True, если продукт удалён, иначе False.
         """
-        for product in self.products:
-            if product.name.casefold() == name.casefold():
-                self.products.remove(product)
+        for product_name in self.products:
+            if product_name.casefold() == name.casefold():
+                del self.products[product_name]
                 return True
         return False
 
@@ -62,14 +50,14 @@ class Refrigerator:
             print("Холодильник пуст.")
             return
 
-        for product in self.products:
-            if product.is_expired():
+        for name, expiration_date in self.products.items():
+            if expiration_date < date.today():
                 status = "срок годности истёк"
             else:
                 status = "годен"
 
             print(
-                f"{product.name} — до {product.expiration_date:%d.%m.%Y} "
+                f"{name} — до {expiration_date:%d.%m.%Y} "
                 f"({status})"
             )
 
@@ -92,8 +80,8 @@ def add_product_from_input(refrigerator: Refrigerator) -> None:
         return
 
     expiration_date = read_expiration_date()
-    refrigerator.add_product(Product(name, expiration_date))
-    print(f"Продукт «{name}» добавлен.")
+    refrigerator.add_product(name, expiration_date)
+    print(f"Продукт «{name}» добавлен или обновлён.")
 
 
 def run() -> None:
