@@ -1,5 +1,4 @@
 from datetime import date, datetime
-from typing import Optional
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -62,7 +61,7 @@ class Refrigerator:
             )
 
 
-def read_expiration_date() -> Optional[date]:
+def read_expiration_date() -> date | None:
     """Запрашивает дату срока годности или возвращает None при отмене."""
     while True:
         value = input(
