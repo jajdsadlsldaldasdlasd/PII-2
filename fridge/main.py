@@ -106,7 +106,11 @@ def run() -> None:
             if not refrigerator.products:
                 continue
 
-            number = input("Введите номер продукта: ").strip()
+            number = input("Введите номер продукта или 0 для отмены: ").strip()
+            if number == "0":
+                print("Удаление отменено.")
+                continue
+
             try:
                 removed = refrigerator.remove_product(int(number))
             except ValueError:
