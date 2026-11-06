@@ -1,6 +1,7 @@
 """Учёт продуктов в холодильнике."""
 
 from datetime import date, datetime
+from typing import Optional
 
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -63,10 +64,15 @@ class Refrigerator:
             )
 
 
-def read_expiration_date() -> date:
-    """Запрашивает дату в формате ГГГГ-ММ-ДД."""
+def read_expiration_date() -> Optional[date]:
+    """Запрашивает дату срока годности или возвращает None при отмене."""
     while True:
-        value = input("Срок годности (ГГГГ-ММ-ДД): ").strip()
+        value = input(
+            "Срок годности (ГГГГ-ММ-ДД, 0 — отмена): "
+        ).strip()
+        if value == "0":
+            return None
+
         try:
             return datetime.strptime(value, DATE_FORMAT).date()
         except ValueError:
@@ -75,12 +81,20 @@ def read_expiration_date() -> date:
 
 def add_product_from_input(refrigerator: Refrigerator) -> None:
     """Запрашивает данные продукта и добавляет его в холодильник."""
-    name = input("Название продукта: ").strip()
+    name = input("Название продукта (0 — отмена): ").strip()
+    if name == "0":
+        print("Добавление отменено.")
+        return
+
     if not name:
         print("Название не может быть пустым.")
         return
 
     expiration_date = read_expiration_date()
+    if expiration_date is None:
+        print("Добавление отменено.")
+        return
+
     refrigerator.add_product(name, expiration_date)
     print(f"Продукт «{name}» добавлен или обновлён.")
 
