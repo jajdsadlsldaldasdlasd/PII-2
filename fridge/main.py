@@ -27,22 +27,21 @@ class Refrigerator:
 
         self.products[name] = expiration_date
 
-    def remove_product(self, name: str) -> bool:
-        """Удаляет первый продукт с таким названием.
-
-        Названия сравниваются без учёта регистра.
+    def remove_product(self, number: int) -> bool:
+        """Удаляет продукт по его номеру в списке.
 
         Args:
-            name: Название продукта.
+            number: Номер продукта, начиная с 1.
 
         Returns:
             True, если продукт удалён, иначе False.
         """
-        for product_name in self.products:
-            if product_name.casefold() == name.casefold():
-                del self.products[product_name]
-                return True
-        return False
+        product_names = list(self.products)
+        if number < 1 or number > len(product_names):
+            return False
+
+        del self.products[product_names[number - 1]]
+        return True
 
     def show_products(self) -> None:
         """Показывает продукты и их сроки годности."""
@@ -50,14 +49,16 @@ class Refrigerator:
             print("Холодильник пуст.")
             return
 
-        for name, expiration_date in self.products.items():
+        for number, (name, expiration_date) in enumerate(
+            self.products.items(), start=1
+        ):
             if expiration_date < date.today():
                 status = "срок годности истёк"
             else:
                 status = "годен"
 
             print(
-                f"{name} — до {expiration_date:%d.%m.%Y} "
+                f"{number}. {name} — до {expiration_date:%d.%m.%Y} "
                 f"({status})"
             )
 
@@ -101,11 +102,20 @@ def run() -> None:
         elif choice == "2":
             add_product_from_input(refrigerator)
         elif choice == "3":
-            name = input("Название продукта: ").strip()
-            if refrigerator.remove_product(name):
-                print(f"Продукт «{name}» удалён.")
+            refrigerator.show_products()
+            if not refrigerator.products:
+                continue
+
+            number = input("Введите номер продукта: ").strip()
+            try:
+                removed = refrigerator.remove_product(int(number))
+            except ValueError:
+                removed = False
+
+            if removed:
+                print("Продукт удалён.")
             else:
-                print("Такого продукта нет в холодильнике.")
+                print("Введите номер из списка.")
         elif choice == "0":
             print("До свидания!")
             break
