@@ -1,5 +1,3 @@
-"""Учёт продуктов в холодильнике."""
-
 from datetime import date, datetime
 from typing import Optional
 
