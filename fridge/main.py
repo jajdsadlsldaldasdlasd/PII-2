@@ -19,7 +19,7 @@ class Refrigerator:
             expiration_date: Срок годности.
         """
         for product_name in self.products:
-            if product_name.casefold() == name.casefold():
+            if product_name.lower() == name.lower():
                 self.products[product_name] = expiration_date
                 return
 
